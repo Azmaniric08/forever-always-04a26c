@@ -163,6 +163,30 @@ footer{text-align:center;color:var(--dim);padding:1rem 1rem 3rem;font-size:.9rem
 .cf{position:fixed;top:-40px;z-index:99;pointer-events:none;font-size:1.6rem;animation:fall linear forwards}
 @keyframes fall{to{transform:translate(var(--dx),110vh) rotate(var(--r))}}
 
+/* ---- phone tuning ---- */
+html{-webkit-text-size-adjust:100%}
+.hero{min-height:74svh}
+.sheet{max-height:94dvh}#mv,#mi{max-height:58dvh}
+.x{width:40px;height:40px}
+@media(hover:none){.btn:hover,.card:hover,.year:hover,.pc:hover,.x:hover{transform:none}}
+@media(max-width:699px){
+  .lbl{display:none}
+  .brand{font-size:1.45rem}
+  .btn.sm{padding:.5rem .85rem}
+  #picker{gap:1rem;padding-top:6.5rem;padding-bottom:6.5rem}
+  #picker h1{font-size:2.1rem}
+  #nick{font-size:1.6rem;margin-top:.3rem}
+  .years{gap:.8rem}
+  .poster{aspect-ratio:1/.9;border-radius:22px}
+  .poster em{font-size:2.6rem}
+  .poster b{font-size:1.4rem;bottom:.5rem}
+  .year span{font-size:.8rem;margin-top:.4rem}
+  .hero{padding:5.5rem 1.25rem 2.2rem}
+  .hero h2{font-size:4.2rem}
+  .row{margin:1.8rem 0}
+  .pc{width:128px}
+  #count{font-size:6.5rem}
+}
 @media(prefers-reduced-transparency:reduce){nav,.modal,.thumb u,.btn.glass{-webkit-backdrop-filter:none;backdrop-filter:none}nav{background:var(--bg)}.thumb u,.btn.glass{background:#fff}}
 @media(prefers-contrast:more){:root{--dim:#3f2a31}.card,.sheet{outline:1px solid #2b182066}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important}.pc,.sc{animation:none!important}}
@@ -185,7 +209,7 @@ footer{text-align:center;color:var(--dim);padding:1rem 1rem 3rem;font-size:.9rem
 
 <nav>
   <span class="brand" id="brand"></span>
-  <span style="display:flex;gap:.5rem"><button class="btn glass sm" id="mus" aria-label="Music on/off">🎵</button><button class="btn glass sm" id="back">🔄 Years</button><button class="btn primary sm" id="navLetter">💌 Letter</button></span>
+  <span style="display:flex;gap:.5rem"><button class="btn glass sm" id="mus" aria-label="Music on/off">🎵</button><button class="btn glass sm" id="back" aria-label="Switch year">🔄<span class="lbl"> Years</span></button><button class="btn primary sm" id="navLetter" aria-label="Read the letter">💌<span class="lbl"> Letter</span></button></span>
 </nav>
 
 <header class="hero">
@@ -260,14 +284,14 @@ $("years").innerHTML = YEARS.map((c, i) =>
 /* mixed postcards from every year, scattered around the edges of the year screen */
 (function scatter() {
   const mob = innerWidth < 1100;          // narrower screens: keep cards to the top and bottom bands
-  const slots = mob ? [[3, 2], [38, 0], [72, 3], [5, 89], [38, 91], [72, 88]]
+  const slots = mob ? [[4, 1], [40, 0], [74, 2], [6, 94], [40, 95], [74, 93]]
                     : [[3, 8], [15, 66], [1, 36], [9, 82], [88, 6], [79, 70], [90, 38], [83, 84], [27, 86], [62, 87]];
   const all = Object.values(MEDIA).flatMap(m => [...m.photos, ...m.videos.map(v => v.poster)]);
   for (let i = all.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [all[i], all[j]] = [all[j], all[i]] }
   slots.forEach(([x, y], i) => {
     if (!all[i]) return;
     const d = document.createElement("div"); d.className = "sc";
-    d.style.cssText = `left:${x}%;top:${y}%;--w:${innerWidth < 700 ? 72 : mob ? 100 : 118}px;--r:${(Math.random() * 12 - 6).toFixed(1)}deg;--dx:${(Math.random() * 14 - 7).toFixed(0)}px;--dy:${(Math.random() * 16 - 8).toFixed(0)}px;--d:${(4 + Math.random() * 3).toFixed(1)}s;--i:${i}`;
+    d.style.cssText = `left:${x}%;top:${y}%;--w:${innerWidth < 700 ? 62 : mob ? 100 : 118}px;--r:${(Math.random() * 12 - 6).toFixed(1)}deg;--dx:${(Math.random() * 14 - 7).toFixed(0)}px;--dy:${(Math.random() * 16 - 8).toFixed(0)}px;--d:${(4 + Math.random() * 3).toFixed(1)}s;--i:${i}`;
     d.innerHTML = `<img src="${all[i]}" alt="">`;
     $("picker").append(d);
   });
